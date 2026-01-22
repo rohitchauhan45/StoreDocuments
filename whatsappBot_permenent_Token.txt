@@ -1,0 +1,9 @@
+EAAbk2RK4Iu8BPwJlngeBfSsLm3kzEE5kJ4Nv1cFM0UJiufBp4rXRRJQSslRpEB44G591i4KWvXhk3U9EZAw7ScyYavGXpgRz3N79sCJWTA2YslTdiMvcfwZCq41gqQZA7kcsQSaQoABCl4IUwBZB4tUTp9IxYlAb5ovpu25OrnJbcIJzoMA7YfECk99syQZDZD
+
+EAAbk2RK4Iu8BPwJlngeBfSsLm3kzEE5kJ4Nv1cFM0UJiufBp4rXRRJQSslRpEB44G591i4KWvXhk3U9EZAw7ScyYavGXpgRz3N79sCJWTA2YslTdiMvcfwZCq41gqQZA7kcsQSaQoABCl4IUwBZB4tUTp9IxYlAb5ovpu25OrnJbcIJzoMA7YfECk99syQZDZD
+
+
+1st : https://fe2-wp.vercel.app
+
+2nd 1: https://store-documents.vercel.app/api/googleAuth/callback
+2nd 2 : https://fe2-wp.vercel.app/api/googleAuth/callback

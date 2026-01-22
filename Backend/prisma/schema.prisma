@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Status {
+  active
+  inactive
+}
+
+model SuperAdmin {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+}
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  lastLogin DateTime @default(now())
+  // One Admin → One User
+  user      User?
+}
+
+model User {
+  id                         Int      @id @default(autoincrement())
+  phoneNumber                String   @unique
+  googleMail                 String?  @unique
+  userName                   String?
+  status                     Status   @default(active)
+  accessToken                String?
+  refreshToken               String?
+  scope                      String?
+  tokenType                  String?
+  expiryDate                 BigInt?
+  refreshTokenExpiresIn      Int?
+  defaultFolderId            String?
+  folders                    Json?    @default("[]")
+  createdAt                  DateTime @default(now())
+  updatedAt                  DateTime @updatedAt
+
+  adminId                    Int      @unique
+  admin                      Admin    @relation(fields: [adminId], references: [id])
+  // Relation: One User → Many UserDocuments
+  documents                  UserDocument[]
+}
+
+model UserDocument {
+  id              String   @id @default(cuid())
+  userId          Int        //foreign key column
+  phoneNumber     String   
+  fileName        String   
+  mimeType        String?  
+  metadata        Json?    
+  googleDriveLink String?  
+  googleDriveId   String?  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relation mapping
+  user            User     @relation(fields: [userId], references: [id])
+}

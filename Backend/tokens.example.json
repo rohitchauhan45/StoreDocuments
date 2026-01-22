@@ -1,0 +1,9 @@
+{
+  "access_token": "<ACCESS_TOKEN>",
+  "refresh_token": "<REFRESH_TOKEN>",
+  "scope": "https://www.googleapis.com/auth/drive.file",
+  "token_type": "Bearer",
+  "refresh_token_expires_in": 604799,
+  "expiry_date": 0
+}
+
