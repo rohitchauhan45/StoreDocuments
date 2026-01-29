@@ -22,7 +22,7 @@ const allowedOrigins = [
 	'http://localhost:5173',
 	'http://localhost:3000',
 	'http://ded3896.inmotionhosting.com',
-	'https://ded3896.inmotionhosting.com'
+	'https://ded3896.inmotionhosting.com',
 ];
 
 // Add frontendUrl from env if it's not already in the list
