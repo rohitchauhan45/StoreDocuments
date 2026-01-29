@@ -381,9 +381,6 @@ export const getUserFolders = async (phoneNumber) => {
 
 export const sendEmail = async (sendEmail, otp) => {
     try {
-        console.log("sendEmail", sendEmail)
-        console.log("otp", otp)
-        
         // Use port 587 + STARTTLS; many hosts block outbound 465 (e.g. InMotion)
         const transporter = nodemailer.createTransport({
             host: 'smtp.gmail.com',
