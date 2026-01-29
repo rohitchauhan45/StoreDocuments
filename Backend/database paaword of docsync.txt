@@ -1,1 +1,4 @@
-r$=I4vwqyh.z,,HP
+Databaseuser : r$=I4vwqyh.z,,HP
+ssh : 0MLN4j(jE3AKL=Hv
+new ssh : 2R_u*xdHycl2XR88
+postgresql://CPANELUSERNAME_DBUSERNAME:PASSWORD@HOST:PORT/CPANELUSERNAME_DATABASENAME

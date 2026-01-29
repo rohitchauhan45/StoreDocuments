@@ -20,7 +20,9 @@ const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
 const allowedOrigins = [
 	'https://fe2-wp.vercel.app',
 	'http://localhost:5173',
-	'http://localhost:3000'
+	'http://localhost:3000',
+	'http://ded3896.inmotionhosting.com',
+	'https://ded3896.inmotionhosting.com'
 ];
 
 // Add frontendUrl from env if it's not already in the list
