@@ -384,8 +384,12 @@ export const sendEmail = async (sendEmail, otp) => {
         console.log("sendEmail", sendEmail)
         console.log("otp", otp)
         
+        // Use port 587 + STARTTLS; many hosts block outbound 465 (e.g. InMotion)
         const transporter = nodemailer.createTransport({
-            service: 'gmail',
+            host: 'smtp.gmail.com',
+            port: 587,
+            secure: false,
+            requireTLS: true,
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASSWORD
