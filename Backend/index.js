@@ -50,7 +50,7 @@ app.use(cookieParser());
 
 // Basic health and env diagnostics (does not expose secrets)
 app.get('/health', (req, res) => {
-	return res.json({ status: 'ok' });
+	return res.json({ status: 'bahut maja Aa Raha hai' });
 });
 
 app.get('/auth/debug-env', (req, res) => {
