@@ -195,7 +195,7 @@ export const googleAuthCallback = async (req, res) => {
             // console.log('Sending welcome template message to:', phoneNumber);
             await sendWhatsAppTemplateMessage(
                 phoneNumber,
-                'welcome_message',
+                'docsync_welcome',
                 'en' // Language code - change if your template uses a different language
             );
             // console.log('Welcome template message sent successfully');
