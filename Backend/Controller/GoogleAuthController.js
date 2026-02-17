@@ -101,7 +101,7 @@ export const googleAuthCallback = async (req, res) => {
     // Check if Google returned an error
     if (error) {
         console.error('Google OAuth error:', error, req.query);
-        const redirect = new URL(frontendUrl);
+        const redirect = new URL(`${frontendUrl}/login`);
         redirect.searchParams.set('error', error);
         redirect.searchParams.set('error_description', req.query.error_description || 'OAuth error occurred');
         return res.redirect(redirect.toString());
@@ -126,7 +126,7 @@ export const googleAuthCallback = async (req, res) => {
 
     if (!phoneNumber) {
         // console.error('Missing phone number in callback');
-        const redirect = new URL(frontendUrl);
+        const redirect = new URL(`${frontendUrl}/login`);
         redirect.searchParams.set('error', 'missing_phone');
         redirect.searchParams.set('error_message', 'Phone number not found. Please try again.');
         return res.redirect(redirect.toString());
@@ -208,13 +208,13 @@ export const googleAuthCallback = async (req, res) => {
         // Clear cookie
         res.clearCookie('googleDrivePhone');
 
-        const redirect = new URL(`${frontendUrl}`);
+        const redirect = new URL(`${frontendUrl}/dashboard`);
         redirect.searchParams.set('drive_connected', 'true');
         return res.redirect(redirect.toString());
     } catch (err) {
         // console.error('Token exchange error:', err.message);
         // console.error('Full error:', err);
-        const redirect = new URL(frontendUrl);
+        const redirect = new URL(`${frontendUrl}/dashboard`);
         redirect.searchParams.set('error', 'token_exchange_failed');
         redirect.searchParams.set('error_message', err.message);
         return res.redirect(redirect.toString());
