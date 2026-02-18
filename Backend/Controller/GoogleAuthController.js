@@ -189,17 +189,16 @@ export const googleAuthCallback = async (req, res) => {
         // console.log('Folder created and saved to database');
 
         // Send welcome template message via WhatsApp
-        // Use original phoneNumber (before normalization) for WhatsApp as it needs full international format
+        // If docsync_welcome was approved WITH one body variable ({{Name}}), pass { includeBodyParameters: true }
+        // If it was approved with NO variables, use includeBodyParameters: false (default for this call)
         try {
-            // Template has no parameters, so we don't pass any
-            // console.log('Sending welcome template message to:', phoneNumber);
             await sendWhatsAppTemplateMessage(
                 phoneNumber,
                 userName,
                 'docsync_welcome',
-                'en' // Language code - change if your template uses a different language
+                'en_US',
+                { includeBodyParameters: false }
             );
-            // console.log('Welcome template message sent successfully');
         } catch (whatsappError) {
             // Log error but don't fail the Google Drive connection
             console.warn('Failed to send welcome WhatsApp template message:', whatsappError.message);

@@ -124,83 +124,64 @@ export const checkUserStatus = async (phoneNumber) => {
 
 
 // Send WhatsApp template message
-export const sendWhatsAppTemplateMessage = async (to, userName, templateName, languageCode = 'en') => {
+// If your approved template has NO body variables, pass includeBodyParameters: false
+// If it has one variable (e.g. {{Name}}), pass includeBodyParameters: true (default)
+export const sendWhatsAppTemplateMessage = async (to, userName, templateName, languageCode = 'en_US', options = {}) => {
+    const { includeBodyParameters = true } = options;
+
     try {
-        // Validation
-        if (!to) {
-            throw new Error('Recipient phone number is required');
-        }
+        if (!to) throw new Error('Recipient phone number is required');
+        if (!templateName) throw new Error('Template name is required');
+        if (!WHATSAPP_ACCESS_TOKEN || !WHATSAPP_PHONE_NUMBER_ID) throw new Error('WhatsApp not configured');
 
-        if (!templateName) {
-            throw new Error('Template name is required');
-        }
-
-        console.log('Sending WhatsApp template message to:', to, 'Template:', templateName);
-
-        // Check if WhatsApp is configured
-        if (!WHATSAPP_ACCESS_TOKEN || !WHATSAPP_PHONE_NUMBER_ID) {
-            throw new Error('WhatsApp not configured');
-        }
-
-        // Send template message via WhatsApp Business API
         const messageUrl = `${WHATSAPP_API_BASE_URL}/${WHATSAPP_PHONE_NUMBER_ID}/messages`;
 
-        // WhatsApp body params only accept type + text; use fallback when userName is missing
-        const nameForTemplate = userName && String(userName).trim() ? String(userName).trim() : 'User';
+        const template = {
+            name: templateName,
+            language: { code: languageCode }
+        };
 
-        console.log("...................................................")
-        console.log("nameForTemplate : ", nameForTemplate)
-        console.log("...................................................")
+        if (includeBodyParameters) {
+            const nameForTemplate = userName && String(userName).trim() ? String(userName).trim() : 'User';
+            template.components = [
+                {
+                    type: 'body',
+                    parameters: [{ type: 'text', text: nameForTemplate }]
+                }
+            ];
+        }
 
         const messagePayload = {
             messaging_product: 'whatsapp',
             to,
             type: 'template',
-            template: {
-                name: templateName,
-                language: {
-                    code: languageCode
-                },
-                components: [
-                    {
-                        type: 'body',
-                        parameters: [
-                            {
-                                type: 'text',
-                                text: nameForTemplate
-                            }
-                        ]
-                    }
-                ]
-            }
+            template
         };
-
-        console.log('Sending WhatsApp template message:', {
-            to,
-            templateName,
-            languageCode,
-            phoneNumberId: WHATSAPP_PHONE_NUMBER_ID
-        });
 
         const response = await axios.post(messageUrl, messagePayload, {
             headers: {
                 'Authorization': `Bearer ${WHATSAPP_ACCESS_TOKEN}`,
                 'Content-Type': 'application/json'
-            }
+            },
+            validateStatus: () => true
         });
 
-        console.log('WhatsApp template message sent successfully:', response.data);
+        if (response.status !== 200) {
+            const errMsg = response.data?.error?.message || response.statusText;
+            const errCode = response.data?.error?.code;
+            console.error('WhatsApp template API error:', response.status, errCode, errMsg, response.data?.error);
+            throw new Error(`WhatsApp template failed: ${errMsg} (${errCode})`);
+        }
 
         return {
             success: true,
-            messageId: response.data.messages[0].id,
+            messageId: response.data.messages?.[0]?.id,
             recipient: to,
             templateName,
             timestamp: new Date().toISOString()
         };
-
     } catch (error) {
-        console.error('Send WhatsApp template message error:', error);
+        console.error('Send WhatsApp template message error:', error?.response?.data || error?.message || error);
         throw error;
     }
 };
