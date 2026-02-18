@@ -196,7 +196,7 @@ export const googleAuthCallback = async (req, res) => {
                 phoneNumber,
                 userName,
                 'docsync_welcome',
-                'en_US',
+                'en',
                 { includeBodyParameters: false }
             );
         } catch (whatsappError) {

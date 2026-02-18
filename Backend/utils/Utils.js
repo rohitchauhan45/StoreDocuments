@@ -126,7 +126,7 @@ export const checkUserStatus = async (phoneNumber) => {
 // Send WhatsApp template message
 // If your approved template has NO body variables, pass includeBodyParameters: false
 // If it has one variable (e.g. {{Name}}), pass includeBodyParameters: true (default)
-export const sendWhatsAppTemplateMessage = async (to, userName, templateName, languageCode = 'en_US', options = {}) => {
+export const sendWhatsAppTemplateMessage = async (to, userName, templateName, languageCode = 'en', options = {}) => {
     const { includeBodyParameters = true } = options;
 
     try {
