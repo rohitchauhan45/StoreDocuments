@@ -124,7 +124,7 @@ export const checkUserStatus = async (phoneNumber) => {
 
 
 // Send WhatsApp template message
-export const sendWhatsAppTemplateMessage = async (to, templateName, languageCode = 'en') => {
+export const sendWhatsAppTemplateMessage = async (to, userName, templateName, languageCode = 'en') => {
     try {
         // Validation
         if (!to) {
@@ -145,6 +145,13 @@ export const sendWhatsAppTemplateMessage = async (to, templateName, languageCode
         // Send template message via WhatsApp Business API
         const messageUrl = `${WHATSAPP_API_BASE_URL}/${WHATSAPP_PHONE_NUMBER_ID}/messages`;
 
+        // WhatsApp body params only accept type + text; use fallback when userName is missing
+        const nameForTemplate = userName && String(userName).trim() ? String(userName).trim() : 'User';
+
+        console.log("...................................................")
+        console.log("nameForTemplate : ", nameForTemplate)
+        console.log("...................................................")
+
         const messagePayload = {
             messaging_product: 'whatsapp',
             to,
@@ -153,7 +160,18 @@ export const sendWhatsAppTemplateMessage = async (to, templateName, languageCode
                 name: templateName,
                 language: {
                     code: languageCode
-                }
+                },
+                components: [
+                    {
+                        type: 'body',
+                        parameters: [
+                            {
+                                type: 'text',
+                                text: nameForTemplate
+                            }
+                        ]
+                    }
+                ]
             }
         };
 
