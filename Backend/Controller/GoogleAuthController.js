@@ -188,16 +188,14 @@ export const googleAuthCallback = async (req, res) => {
         });
         // console.log('Folder created and saved to database');
 
-        // Send welcome template message via WhatsApp
-        // If docsync_welcome was approved WITH one body variable ({{Name}}), pass { includeBodyParameters: true }
-        // If it was approved with NO variables, use includeBodyParameters: false (default for this call)
+        // Send welcome template message via WhatsApp (sends user's name so {{Name}} is replaced)
         try {
             await sendWhatsAppTemplateMessage(
                 phoneNumber,
                 userName,
                 'docsync_welcome',
                 'en',
-                { includeBodyParameters: false }
+                { includeBodyParameters: true }
             );
         } catch (whatsappError) {
             // Log error but don't fail the Google Drive connection
