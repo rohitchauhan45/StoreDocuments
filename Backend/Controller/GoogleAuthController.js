@@ -188,12 +188,12 @@ export const googleAuthCallback = async (req, res) => {
         });
         // console.log('Folder created and saved to database');
 
-        // Send welcome template message via WhatsApp (sends user's name so {{Name}} is replaced)
+        // Send welcome template message via WhatsApp (sends user's name so {{1}} is replaced)
         try {
             await sendWhatsAppTemplateMessage(
                 phoneNumber,
                 userName,
-                'docsync_welcome',
+                'welcome',
                 'en',
                 { includeBodyParameters: true }
             );

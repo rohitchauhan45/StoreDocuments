@@ -142,7 +142,7 @@ export const sendWhatsAppTemplateMessage = async (to, userName, templateName, la
         };
 
         if (includeBodyParameters) {
-            const nameForTemplate = userName && String(userName).trim() ? String(userName).trim() : 'User';
+            const nameForTemplate = userName && String(userName).trim() ? String(userName).trim() : 'guys';
             template.components = [
                 {
                     type: 'body',
