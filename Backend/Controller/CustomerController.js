@@ -80,7 +80,11 @@ export const checkUserExists = async (req,res) =>{
             return res.status(200).json({ message: "User not found", success: true })
         }
 
-        return res.status(200).json({ message: "phone number is already exists", success: false })
+        const email = user.email || ""
+        const maskedEmail = email.length > 6
+            ? `${email.slice(0, 3)}.......${email.slice(-3)}`
+            : "***"
+        return res.status(200).json({ message: `This phone number already exists with email ${maskedEmail}`, success: false })
 
     } catch (error) {
         console.error("Error checking user exists:", error)
