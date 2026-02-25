@@ -81,8 +81,8 @@ export const checkUserExists = async (req,res) =>{
         }
 
         const email = user.googleMail || ""
-        const maskedEmail = email.length > 6
-            ? `${email.slice(0, 3)}.......${email.slice(-3)}`
+        const maskedEmail = email.length > 12
+            ? `${email.slice(0, 3)}.......${email.slice(-12)}`
             : "***"
         return res.status(200).json({ message: `This phone number already exists with email ${maskedEmail}`, success: false })
 
