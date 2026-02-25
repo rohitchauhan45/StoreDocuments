@@ -80,7 +80,7 @@ export const checkUserExists = async (req,res) =>{
             return res.status(200).json({ message: "User not found", success: true })
         }
 
-        const email = user.email || ""
+        const email = user.googleMail || ""
         const maskedEmail = email.length > 6
             ? `${email.slice(0, 3)}.......${email.slice(-3)}`
             : "***"
