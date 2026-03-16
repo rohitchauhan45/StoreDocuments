@@ -7,9 +7,27 @@ import authRoutes from './Route/Auth.js';
 import webhookRoute from './Route/webhook.js'
 import adminRoutes from './Route/admin.js'
 import customerRoutes from './Route/customer.js'
+import prisma from './db.js';
 
 import dotenv from "dotenv";
 dotenv.config();
+
+/** Check database connection and log result */
+async function checkDatabaseConnection() {
+	try {
+		await prisma.$connect();
+		console.log('[DB] ✓ Database connected successfully');
+		return true;
+	} catch (err) {
+		const error = /** @type {Error} */ (err);
+		console.error('[DB] ✗ Database connection failed');
+		console.error('[DB] Error name:', error.name);
+		console.error('[DB] Error message:', error.message);
+		if (error.cause) console.error('[DB] Cause:', error.cause);
+		if (error.stack) console.error('[DB] Stack:', error.stack);
+		return false;
+	}
+}
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -60,6 +78,20 @@ app.get('/auth/debug-env', (req, res) => {
 	});
 });
 
+async function startServer() {
+	const dbOk = await checkDatabaseConnection();
+	if (!dbOk) {
+		console.warn('[Server] Starting anyway — DB is not connected. Some features may not work.');
+	}
+	app.listen(port, "0.0.0.0", () => {
+		console.log(`[Server] Running on http://0.0.0.0:${port}`);
+	});
+}
+
+startServer().catch((err) => {
+	console.error('[Server] Failed to start:', err);
+	process.exit(1);
+});
 
 // Routes
 app.use('/api/googleAuth',googleAuthRoutes)
