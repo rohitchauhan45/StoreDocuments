@@ -292,7 +292,7 @@ export const createFolderHandlers = ({ pendingUploads, pendingFolderSelections, 
 
             const user = await prisma.user.findUnique({
                 where: { phoneNumber },
-                select: { id: true }
+                select: { id: true, googleMail: true }
             });
 
             if (!user) {
@@ -326,6 +326,7 @@ export const createFolderHandlers = ({ pendingUploads, pendingFolderSelections, 
                 data: {
                     phoneNumber,
                     userId: user.id,
+                    googlemail:user.googleMail || "no-email",
                     fileName: pendingUpload.fileName,
                     mimeType: pendingUpload.mimeType,
                     metadata: metadataWithFolder,

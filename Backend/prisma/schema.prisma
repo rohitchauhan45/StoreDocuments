@@ -61,7 +61,8 @@ model User {
 model UserDocument {
   id              String   @id @default(cuid())
   userId          Int        //foreign key column
-  phoneNumber     String   
+  phoneNumber     String
+  googlemail      String   
   fileName        String   
   mimeType        String?  
   metadata        Json?    

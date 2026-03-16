@@ -25,7 +25,7 @@ export const getCustomerDetail = async (req, res) => {
 
         const userRecord = await prisma.user.findUnique({
             where: { adminId: customer.id },
-            select: { id: true, userName: true, phoneNumber: true, status: true }
+            select: { id: true, userName: true, phoneNumber: true, status: true,googleMail:true }
         })
 
         if(!userRecord){
@@ -33,7 +33,7 @@ export const getCustomerDetail = async (req, res) => {
         }
 
         const documents = await prisma.userDocument.findMany({
-            where: { userId: userRecord.id },
+            where: { userId: userRecord.id ,googlemail:userRecord.googleMail },
             select: { id: true, fileName: true, metadata: true, mimeType: true, createdAt: true , googleDriveLink:true },
             orderBy: { createdAt: 'desc' }
         })

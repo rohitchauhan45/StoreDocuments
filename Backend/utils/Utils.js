@@ -67,9 +67,16 @@ export const getUserDocuments = async (from, description) => {
     console.log("description", description)
     console.log("from", from)
     try {
+        const user = await prisma.user.findFirst({where:{phoneNumber:from}})
+
+        if(!user){
+            return false
+        }
+
         const document = await prisma.userDocument.findFirst({
             where: {
                 phoneNumber: from,
+                googlemail:user.googleMail,
                 metadata: {
                     path: ["rawText"],
                     string_contains: description,
@@ -330,9 +337,15 @@ const normalizeFolders = (folders) => {
 };
 
 export const getUserFolders = async (phoneNumber) => {
+    const user = await prisma.user.findFirst({where:{phoneNumber:phoneNumber}})
+    if(!user){
+        return false
+    }
+
     const documents = await prisma.userDocument.findMany({
         where: {
             phoneNumber,
+            googlemail:user.googleMail,
             OR: [
                 { metadata: { path: ["folder", "id"], not: null } },
                 { metadata: { path: ["folderId"], not: null } },
