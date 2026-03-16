@@ -20,7 +20,8 @@ const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
 const allowedOrigins = [
 	'http://localhost:5173',
 	'http://localhost:3000',
-	'https://coredocassist.com'
+	'https://coredocassist.com',
+	'https://backend.coredocassist.com'
 ];
 
 // Add frontendUrl from env if it's not already in the list
