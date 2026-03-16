@@ -68,15 +68,4 @@ app.use('/api/webhook',webhookRoute)
 app.use('/api/admin',adminRoutes)
 app.use('/api/customer',customerRoutes)
 
-if (process.env.VERCEL !== '1') {
-	app.listen(port, () => {
-		console.log(`Backend listening on http://localhost:${port}`);
-		console.log('Env loaded:', {
-			hasClientId: !!process.env.GOOGLE_CLIENT_ID,
-			hasClientSecret: !!process.env.GOOGLE_CLIENT_SECRET,
-			frontendUrl,
-		});
-	});
-}
-
 export default app;

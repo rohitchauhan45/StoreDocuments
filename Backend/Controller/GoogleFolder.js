@@ -322,6 +322,10 @@ export const createFolderHandlers = ({ pendingUploads, pendingFolderSelections, 
                 }
             };
 
+            console.log("upload doc and phone number : ", phoneNumber)
+            console.log("user : ", user)
+            console.log("googlemail : ", googleMail)
+            
             await prisma.userDocument.create({
                 data: {
                     phoneNumber,
