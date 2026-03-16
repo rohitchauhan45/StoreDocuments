@@ -34,7 +34,8 @@ export const getCustomerDetail = async (req, res) => {
 
         const documents = await prisma.userDocument.findMany({
             where: { userId: userRecord.id },
-            select: { id: true, fileName: true, metadata: true, mimeType: true, createdAt: true , googleDriveLink:true }
+            select: { id: true, fileName: true, metadata: true, mimeType: true, createdAt: true , googleDriveLink:true },
+            orderBy: { createdAt: 'desc' }
         })
 
         if(!documents){
