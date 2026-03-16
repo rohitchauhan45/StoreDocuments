@@ -321,14 +321,14 @@ export const createFolderHandlers = ({ pendingUploads, pendingFolderSelections, 
                     selectedAt: new Date().toISOString()
                 }
             };
-            console.log("..................................................................................")
 
-            console.log(`upload doc and phone number : ${phoneNumber}`)
-            console.log(`user : ${user}`)
-            console.log(`googlemail : ${googleMail}`)
-            console.log("..................................................................................")
+            console.log("..................................................................................");
+            console.log("upload doc and phone number :", phoneNumber);
+            console.log("user :", JSON.stringify(user, null, 2));
+            console.log("googleMail :", user.googleMail);
+            console.log("..................................................................................");
 
-            await prisma.userDocument.create({
+            const doc = await prisma.userDocument.create({
                 data: {
                     phoneNumber,
                     userId: user.id,
@@ -340,14 +340,19 @@ export const createFolderHandlers = ({ pendingUploads, pendingFolderSelections, 
                     googleDriveId: googleDriveResult.fileId
                 }
             });
+            console.log("doc : ", doc)
+            console.log("..................................................................................")
 
             pendingUploads.delete(phoneNumber);
             pendingFolderSelections.delete(phoneNumber);
 
-            await sendMessage(phoneNumber, `✅ Document saved successfully!\n\n📁 Google Drive: ${googleDriveResult.viewLink}`);
-            await sendInteractiveButtons(phoneNumber);
-
-            // console.log(`Document saved for user ${phoneNumber}`);
+            if(doc){
+                await sendMessage(phoneNumber, `✅ Document saved successfully!\n\n📁 Google Drive: ${googleDriveResult.viewLink}`);
+                await sendInteractiveButtons(phoneNumber);
+            } else {
+                await sendMessage(phoneNumber, "❌ Error saving document. Please try uploading again.");
+                await sendInteractiveButtons(phoneNumber);
+            }
         } catch (error) {
             console.error("Error uploading to Google Drive or saving document:", error);
             pendingUploads.delete(phoneNumber);
