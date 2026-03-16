@@ -7,7 +7,7 @@ const WHATSAPP_ACCESS_TOKEN = process.env.WHATSAPP_ACCESS_TOKEN;
 const WAP = process.env.WHATSAPP_API_VERSION || 'v22.0';
 
 export const createFolderHandlers = ({ pendingUploads, pendingFolderSelections, sendMessage, sendFolderSelectionButtons, sendInteractiveButtons, sendExistingFolderButtons }) => {
-    
+
     if (!pendingUploads || !pendingFolderSelections) {
         throw new Error('pendingUploads and pendingFolderSelections are required');
     }
@@ -321,16 +321,18 @@ export const createFolderHandlers = ({ pendingUploads, pendingFolderSelections, 
                     selectedAt: new Date().toISOString()
                 }
             };
+            console.log("..................................................................................")
 
-            console.log("upload doc and phone number : ", phoneNumber)
-            console.log("user : ", user)
-            console.log("googlemail : ", googleMail)
-            
+            console.log(`upload doc and phone number : ${phoneNumber}`)
+            console.log(`user : ${user}`)
+            console.log(`googlemail : ${googleMail}`)
+            console.log("..................................................................................")
+
             await prisma.userDocument.create({
                 data: {
                     phoneNumber,
                     userId: user.id,
-                    googlemail:user.googleMail || "no-email",
+                    googlemail: user.googleMail || "no-email",
                     fileName: pendingUpload.fileName,
                     mimeType: pendingUpload.mimeType,
                     metadata: metadataWithFolder,
