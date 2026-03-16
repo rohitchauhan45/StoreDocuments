@@ -347,7 +347,7 @@ export const createFolderHandlers = ({ pendingUploads, pendingFolderSelections, 
             pendingFolderSelections.delete(phoneNumber);
 
             if(doc){
-                await sendMessage(phoneNumber, `✅ Document saved successfully!\n\n📁 Google Drive: ${googleDriveResult.viewLink}`);
+                await sendMessage(phoneNumber, `✅ Document saved suc!\n\n📁 Google Drive: ${googleDriveResult.viewLink}`);
                 await sendInteractiveButtons(phoneNumber);
             } else {
                 await sendMessage(phoneNumber, "❌ Error saving document. Please try uploading again.");
