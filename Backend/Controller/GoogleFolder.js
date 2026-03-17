@@ -322,12 +322,6 @@ export const createFolderHandlers = ({ pendingUploads, pendingFolderSelections, 
                 }
             };
 
-            console.log("..................................................................................");
-            console.log("upload doc and phone number :", phoneNumber);
-            console.log("user :", JSON.stringify(user, null, 2));
-            console.log("googleMail :", user.googleMail);
-            console.log("..................................................................................");
-
             const doc = await prisma.userDocument.create({
                 data: {
                     phoneNumber,
@@ -340,14 +334,11 @@ export const createFolderHandlers = ({ pendingUploads, pendingFolderSelections, 
                     googleDriveId: googleDriveResult.fileId
                 }
             });
-            console.log("doc : ", doc)
-            console.log("..................................................................................")
-
             pendingUploads.delete(phoneNumber);
             pendingFolderSelections.delete(phoneNumber);
 
             if(doc){
-                await sendMessage(phoneNumber, `✅ Document saved suc!\n\n📁 Google Drive: ${googleDriveResult.viewLink}`);
+                await sendMessage(phoneNumber, `✅ Document saved successfully!\n\n📁 Google Drive: ${googleDriveResult.viewLink}`);
                 await sendInteractiveButtons(phoneNumber);
             } else {
                 await sendMessage(phoneNumber, "❌ Error saving document. Please try uploading again.");
