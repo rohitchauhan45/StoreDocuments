@@ -73,20 +73,37 @@ export const getUserDocuments = async (from, description) => {
             return false
         }
 
-        const document = await prisma.userDocument.findFirst({
+        // Prisma 5 JSON filters do not support `mode: "insensitive"` on string_contains.
+        // Load candidate docs for this user, then match case-insensitively in rawText / description / fileName.
+        const searchNorm = String(description ?? '').trim().toLowerCase()
+        if (!searchNorm) {
+            return false
+        }
+
+        const candidates = await prisma.userDocument.findMany({
             where: {
+                userId: user.id,
                 phoneNumber: from,
-                googlemail:user.googleMail,
-                metadata: {
-                    path: ["rawText"],
-                    string_contains: description,
-                    mode: "insensitive"
-                }
+                googlemail: user.googleMail
             },
             select: {
                 googleDriveLink: true,
-                metadata: true
+                metadata: true,
+                fileName: true
             }
+        })
+
+        const document = candidates.find((doc) => {
+            const meta = doc.metadata
+            const rawText = meta && typeof meta === 'object' && meta.rawText != null
+                ? String(meta.rawText)
+                : ''
+            const metaDesc = meta && typeof meta === 'object' && meta.description != null
+                ? String(meta.description)
+                : ''
+            const name = doc.fileName != null ? String(doc.fileName) : ''
+            const haystack = `${rawText} ${metaDesc} ${name}`.toLowerCase()
+            return haystack.includes(searchNorm)
         })
 
         if (!document) {
